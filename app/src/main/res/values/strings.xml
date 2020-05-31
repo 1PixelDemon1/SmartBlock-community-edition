@@ -1,0 +1,15 @@
+<resources>
+    <string name="goRegistrationBut">Регистрация</string>
+    <string name="childNameEditHint">Введите имя ребенка</string>
+    <string name="passwordEditHint">Введите пароль</string>
+    <string name="completeRegistrationBut">Завершить регистрацию</string>
+    <string name="appListMenuItemAutoTitle">Автоматически</string>
+    <string name="appListMenuItemAllTitle">Выбрать все</string>
+    <string name="appListMenuItemNoneTitle">Убрать все</string>
+    <string name="dialogBlockerLayoutTextField">Текст</string>
+    <string name="app_name">SmartBlock</string>
+    <string name="passwordInputEditHint">Введите пароль</string>
+    <string name="defaultContinueButtonText">Ок</string>
+    <string name="device_admin_description">Разрешение необходимо, чтобы предотвратить случайное удаление приложения ребенком</string>
+    <string name="admin_disable_requested_warning">При выключении ребенок может легко удалить приложение, вы уверены?</string>
+</resources>
