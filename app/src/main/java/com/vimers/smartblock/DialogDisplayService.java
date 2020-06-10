@@ -19,9 +19,7 @@ public class DialogDisplayService extends Service {
     private String CHANNEL_ID = "DialogDisplayService";
     public static Timer alertDialogAppearanceTimer;
     public static int timePeriod = 15000;
-    public static boolean isActive = false;
     private static Context context;
-
     //Inner apps don`t have access to to this service
     @Nullable
     @Override
@@ -33,13 +31,11 @@ public class DialogDisplayService extends Service {
     public void onCreate() {
         super.onCreate();
         this.context = this;
-        isActive = true;
     }
     //Creates new notification channel and sets notification
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         this.context = this;
-        isActive = true;
         createNotificationChannel();
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
@@ -61,10 +57,8 @@ public class DialogDisplayService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        isActive = false;
         alertDialogAppearanceTimer.cancel();
     }
-
     //Creates Notification channel
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
