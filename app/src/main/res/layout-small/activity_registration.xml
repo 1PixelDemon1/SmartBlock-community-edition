@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
+    tools:context=".RegistrationActivity">
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/beg_kw_two" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/beg_kw_one" />
+
+    <EditText
+        android:id="@+id/getPasswordLine"
+        android:layout_width="227dp"
+        android:layout_height="42dp"
+        android:background="#008EFA"
+        android:ems="10"
+        android:hint="Введите пароль"
+        android:inputType="textPassword"
+        android:textAlignment="center"
+        android:textColor="#BEF4FC"
+        android:textColorHint="#E4FCFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.483"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/getChildNameLine"
+        app:layout_constraintVertical_bias="0.106" />
+
+    <EditText
+        android:id="@+id/getChildNameLine"
+        android:layout_width="227dp"
+        android:layout_height="44dp"
+        android:background="#008EFA"
+        android:ems="10"
+        android:hint="Введите имя ребенка "
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:textColor="#BEF4FC"
+        android:textColorHint="#E4FCFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.483"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.154" />
+
+    <ImageButton
+        android:id="@+id/goSettingsBut"
+        android:layout_width="114dp"
+        android:layout_height="53dp"
+        android:layout_marginBottom="28dp"
+        android:layout_weight="0.5"
+        android:background="@null"
+        android:clickable="false"
+        android:padding="0dp"
+        android:scaleType="fitXY"
+        android:enabled="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.998"
+        app:srcCompat="@drawable/gaaatowo" />
+</androidx.constraintlayout.widget.ConstraintLayout>
