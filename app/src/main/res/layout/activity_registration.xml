@@ -4,80 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_gradient"
     tools:context=".RegistrationActivity">
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="fill_parent"
-        android:layout_height="780dp"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/beg_kw_two" />
-
-    <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="fill_parent"
-        android:layout_height="780dp"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/beg_kw_one" />
-
     <EditText
-        android:id="@+id/getPasswordLine"
+        android:id="@+id/childNameEdit"
         android:layout_width="wrap_content"
-        android:layout_height="42dp"
-        android:background="#008EFA"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="93dp"
+        android:layout_marginTop="71dp"
+        android:layout_marginEnd="105dp"
+        android:layout_marginBottom="42dp"
         android:ems="10"
-        android:hint="Введите пароль"
-        android:inputType="textPassword"
-        android:textAlignment="center"
-        android:textColor="#BEF4FC"
-        android:textColorHint="#E4FCFF"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:hint="@string/childNameEditHint"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/passwordEdit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.246" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/getChildNameLine"
-        android:layout_width="213dp"
-        android:layout_height="44dp"
-        android:background="#008EFA"
+        android:id="@+id/passwordEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="42dp"
+        android:layout_marginEnd="98dp"
+        android:layout_marginBottom="528dp"
         android:ems="10"
-        android:hint="Введите имя ребенка "
-        android:inputType="textPersonName"
-        android:textAlignment="center"
-        android:textColor="#BEF4FC"
-        android:textColorHint="#E4FCFF"
+        android:hint="@string/passwordEditHint"
+        android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.137" />
+        app:layout_constraintTop_toBottomOf="@+id/childNameEdit" />
 
-    <ImageButton
-        android:id="@+id/goSettingsBut"
-        android:layout_width="114dp"
-        android:layout_height="53dp"
-        android:layout_marginBottom="28dp"
-        android:layout_weight="0.5"
-        android:background="@null"
-        android:clickable="false"
-        android:padding="0dp"
-        android:scaleType="fitXY"
+    <Button
+        android:id="@+id/completeRegistrationBut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="156dp"
+        android:layout_marginTop="301dp"
+        android:layout_marginEnd="167dp"
+        android:layout_marginBottom="165dp"
         android:enabled="false"
+        android:text="@string/completeRegistrationBut"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.998"
-        app:srcCompat="@drawable/gaaatowo" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordEdit" />
 </androidx.constraintlayout.widget.ConstraintLayout>
