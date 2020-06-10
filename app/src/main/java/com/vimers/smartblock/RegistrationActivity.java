@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -62,13 +63,21 @@ public class RegistrationActivity extends AppCompatActivity {
     }
     //OnClick action
     private void onRegistrationCompleted() {
-        try {
-            stopService(new Intent(this ,DialogDisplayService.class));
-            startService(new Intent(this ,DialogDisplayService.class));
+        try{
+            if(DialogDisplayService.isActive) {
+                stopService(new Intent(this ,DialogDisplayService.class));
+                Toast.makeText(this, "Выключил", Toast.LENGTH_LONG).show();
+            }
+            else {
+                startService(new Intent(this ,DialogDisplayService.class));
+                Toast.makeText(this, "Включил", Toast.LENGTH_LONG).show();
+            }
         }
-        catch (Exception e) {
-            startService(new Intent(this ,DialogDisplayService.class));
-        }
+        catch (Exception e) {}
+
+
+
+
 
         //startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
         //new MailSender("Здравствйте, уважаемые родители", "Ваш ребенок, Ярослав попытался удалить SmartBlock", "jarafan3@gmail.com").sendMail();
