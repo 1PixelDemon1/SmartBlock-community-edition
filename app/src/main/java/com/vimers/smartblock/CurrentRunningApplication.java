@@ -7,8 +7,12 @@ import android.app.usage.UsageStatsManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ChangedPackages;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import java.util.List;
 import java.util.SortedMap;
@@ -18,6 +22,7 @@ import static android.content.Context.ACTIVITY_SERVICE;
 
 public class CurrentRunningApplication {
     //Returns package name of currently running application like "com.android.settings"
+    private static int sequence_number = 0;
     public static String getPackageName() {
         String currentApp = "NULL";
         Context context;
@@ -78,5 +83,21 @@ public class CurrentRunningApplication {
             }
         }
         return false;
+    }
+    //Adds earlier installed applications to set
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static void putNewAddedApps() {
+        Context context;
+        if((context = MainActivity.getContextOfApplication()) == null) {
+            context = DialogDisplayService.getContext();
+        }
+
+        ChangedPackages changedPackages = context.getPackageManager().getChangedPackages(sequence_number);
+        if(changedPackages != null) {
+            sequence_number = changedPackages.getSequenceNumber();
+            for (String packageName : changedPackages.getPackageNames()) {
+                BlockedAppsListManager.addApp(packageName);
+            }
+        }
     }
 }

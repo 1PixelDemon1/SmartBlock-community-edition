@@ -45,7 +45,6 @@ public class DialogBlockerManager {
         }
         alertDialog.setCanceledOnTouchOutside(false);
 
-
         return alertDialog;
     }
     //Returns activities to do when button clicked
