@@ -14,7 +14,7 @@ public class MailSender {
         this.text = text;
         this.to = to;
     }
-
+    //Sends mail to a (to) address with (title) header and (text) main body
     public void sendMail() {
         new MaildroidX.Builder()
             .smtp("smtp.gmail.com")

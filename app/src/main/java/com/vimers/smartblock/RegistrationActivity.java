@@ -80,7 +80,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
         //startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
-        //new MailSender("Здравствйте, уважаемые родители", "Ваш ребенок, Ярослав попытался удалить SmartBlock", "jarafan3@gmail.com").sendMail();
         startActivity(new Intent("com.vimers.smartblock.activity_app_list"));
         //startActivity(new Intent("com.vimers.smartblock.activity_input_password").putExtra("INTENT", "com.vimers.smartblock.activity_app_list"));
     }
