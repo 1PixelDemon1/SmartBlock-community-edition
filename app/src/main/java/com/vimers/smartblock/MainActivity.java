@@ -6,13 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
 
     public static Context contextOfApplication;
 
-    private Button goRegistrationButton;
+    private ImageButton goRegistrationButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

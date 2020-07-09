@@ -8,7 +8,7 @@ import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -19,7 +19,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private EditText childNameEdit;
     private EditText passwordEdit;
-    private Button completeRegistrationButton;
+    private ImageButton completeRegistrationButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

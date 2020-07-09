@@ -7,30 +7,16 @@
     android:background="@color/baground"
     tools:context=".RegistrationActivity">
 
-    <Button
-        android:id="@+id/completeRegistrationBut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:enabled="false"
-        android:text="@string/completeRegistrationBut"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordEdit"
-        app:layout_constraintVertical_bias="0.822" />
-
     <EditText
         android:id="@+id/mailEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:autoText="false"
+        android:layout_marginTop="44dp"
         android:ems="10"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/completeRegistrationBut"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordEdit"
-        app:layout_constraintVertical_bias="0.126" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordEdit" />
 
     <EditText
         android:id="@+id/childNameEdit"
@@ -57,4 +43,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/childNameEdit" />
+
+    <ImageButton
+        android:id="@+id/completeRegistrationBut"
+        android:layout_width="133dp"
+        android:layout_height="61dp"
+        android:layout_marginBottom="68dp"
+        android:background="@null"
+        android:clickable="false"
+        android:padding="0dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mailEdit"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/gaaatowo" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
