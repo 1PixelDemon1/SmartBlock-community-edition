@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/goMathSettingsButton"
         android:layout_width="197dp"
         android:layout_height="107dp"
         android:layout_marginTop="36dp"
@@ -31,34 +31,36 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/goAppListButton"
         android:layout_width="289dp"
         android:layout_height="65dp"
         android:background="@null"
         android:padding="0dp"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton3"
+        app:layout_constraintBottom_toTopOf="@+id/goBackgroundWorkingButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/goMathSettingsButton"
         app:layout_constraintVertical_bias="0.487"
         app:srcCompat="@drawable/vibirite_prilojenie" />
 
     <ImageButton
-        android:id="@+id/imageButton3"
+        android:id="@+id/goBackgroundWorkingButton"
         android:layout_width="181dp"
         android:layout_height="78dp"
         android:layout_marginBottom="108dp"
         android:background="@null"
         android:padding="0dp"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton4"
+        app:layout_constraintBottom_toTopOf="@+id/completeSettingsButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/sapusk_v_vone" />
 
     <ImageButton
-        android:id="@+id/imageButton4"
+        android:id="@+id/completeSettingsButton"
         android:layout_width="129dp"
         android:layout_height="60dp"
         android:layout_marginBottom="80dp"

@@ -75,12 +75,9 @@ public class RegistrationActivity extends AppCompatActivity {
         }
         catch (Exception e) {}
 
-
-
-
-
         //startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
-        startActivity(new Intent("com.vimers.smartblock.activity_app_list"));
+        //startActivity(new Intent("com.vimers.smartblock.activity_app_list"));
+        startActivity(new Intent("com.vimers.smartblock.activity_settings"));
         //startActivity(new Intent("com.vimers.smartblock.activity_input_password").putExtra("INTENT", "com.vimers.smartblock.activity_app_list"));
     }
 

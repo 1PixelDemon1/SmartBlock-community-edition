@@ -3,7 +3,9 @@ package com.vimers.smartblock;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -11,18 +13,22 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class DialogBlockerManager {
-    private static MathExercise mathExercise = new MathExercise(new MathActions[]{MathActions.DIVISION, MathActions.ADDITION, MathActions.MULTIPLICATION, MathActions.SUBTRACTION});
+    private static MathExercise mathExercise;
     public static boolean isActive = false;
     public static int numberOfExercises;
 
     //Builds Alert dialog and returns it
     public static AlertDialog getDialog() {
         Context context;
-        //mathExercise
         if((context = MainActivity.getContextOfApplication()) == null) {
             context = DialogDisplayService.getContext();
         }
+
+        fillMathExercise(context);
         AlertDialog alertDialog;
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -49,26 +55,21 @@ public class DialogBlockerManager {
     }
     //Returns activities to do when button clicked
     public static OnClickListener getButtonAction(final AlertDialog alertDialog) {
+
+        ((EditText) alertDialog.findViewById(R.id.answerInput)).setOnKeyListener(new View.OnKeyListener() { //When "Enter" is pressed we do the same as if we pressed ok
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if(event.getAction() == KeyEvent.ACTION_DOWN && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                buttonAction(alertDialog);
+                return true;
+            }
+            return false;
+            }
+        });
+
         return new OnClickListener() {
             @Override
             public void onClick(View v) {
-                int answer;
-                try{
-                    answer = Integer.parseInt(((EditText) alertDialog.findViewById(R.id.answerInput)).getText().toString());
-                }
-                catch (Exception e) {
-                    answer = 0;
-                }
-                if (mathExercise.isCorrect(answer) || answer == 1) { //TODO DELETE ELSE STATEMENT
-                    if(--numberOfExercises <= 0) {
-                        alertDialog.dismiss();
-                        isActive = false;
-                        DialogDisplayService.resetTimer();
-                    } else {
-                        clearInput(alertDialog);
-                        fillDialog(alertDialog);
-                    }
-                }
+                buttonAction(alertDialog);
             }
         };
     }
@@ -79,5 +80,35 @@ public class DialogBlockerManager {
     //Cleans input EditText View
     public static void clearInput(AlertDialog alertDialog) {
         ((EditText) alertDialog.findViewById(R.id.answerInput)).setText("");
+    }
+
+    private static void fillMathExercise(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("MATH_SETTINGS", Context.MODE_PRIVATE);
+        List<MathActions> mathActions = new LinkedList<MathActions>();
+        if(sharedPreferences.getBoolean("ADDITION", true)) mathActions.add(MathActions.ADDITION);
+        if(sharedPreferences.getBoolean("SUBTRACTION", false)) mathActions.add(MathActions.SUBTRACTION);
+        if(sharedPreferences.getBoolean("MULTIPLICATION", false)) mathActions.add(MathActions.MULTIPLICATION);
+        if(sharedPreferences.getBoolean("DIVISION", false)) mathActions.add(MathActions.DIVISION);
+        mathExercise = new MathExercise(mathActions);
+    }
+    //Actually button action
+    private static void buttonAction(AlertDialog alertDialog) {
+        int answer;
+        try{
+            answer = Integer.parseInt(((EditText) alertDialog.findViewById(R.id.answerInput)).getText().toString());
+        }
+        catch (Exception e) {
+            answer = 0;
+        }
+        if (mathExercise.isCorrect(answer) || answer == 1) { //TODO DELETE ELSE STATEMENT
+            if(--numberOfExercises <= 0) {
+                alertDialog.dismiss();
+                isActive = false;
+                DialogDisplayService.resetTimer();
+            } else {
+                clearInput(alertDialog);
+                fillDialog(alertDialog);
+            }
+        }
     }
 }

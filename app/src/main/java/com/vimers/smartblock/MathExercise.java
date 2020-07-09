@@ -2,16 +2,17 @@ package com.vimers.smartblock;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class MathExercise {
-    private MathActions []chosenActivities;
+    private List<MathActions> chosenActivities;
     private int answer;
     private int borderNumber = 100;
 
     //TODO separate for every MathAction
     //Constructor fills a field of Array of MathActivities, which will be displayed
-    MathExercise(MathActions []chosenActivities) {
+    MathExercise(List<MathActions> chosenActivities) {
         this.chosenActivities = chosenActivities;
     }
     //Generates a Math Exercise and returns a string. Answer is written in Object field
@@ -19,14 +20,14 @@ public class MathExercise {
         int first;
         int second;
 
-        if(chosenActivities.length == 0) {
+        if(chosenActivities.size() == 0) {
             first = new Random().nextInt(borderNumber);
             second = new Random().nextInt(borderNumber);
             answer = first + second;
             return first + " + " + second + " = ?";
         }
 
-        MathActions action = chosenActivities[new Random().nextInt(chosenActivities.length)];
+        MathActions action = chosenActivities.get(new Random().nextInt(chosenActivities.size()));
         String exercise = "";
         switch (action) {
             case ADDITION:

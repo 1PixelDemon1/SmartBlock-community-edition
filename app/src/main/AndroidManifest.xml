@@ -41,7 +41,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
@@ -53,6 +52,27 @@
             android:exported="true" />
 
         <!-- Activities -->
+        <activity android:name=".DurationSettingsActivity">
+            <intent-filter>
+                <action android:name="com.vimers.smartblock.activity_duration_settings" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SettingsActivity">
+            <intent-filter>
+                <action android:name="com.vimers.smartblock.activity_settings" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".MathSettingsActivity">
+            <intent-filter>
+                <action android:name="com.vimers.smartblock.activity_math_settings" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".InputPasswordActivity"
             android:launchMode="singleTask">
