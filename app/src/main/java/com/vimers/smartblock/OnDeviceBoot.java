@@ -9,8 +9,9 @@ public class OnDeviceBoot extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        //Starts Service of background working
         if (Build.VERSION.SDK_INT >= 26) {
-            context.startForegroundService(new Intent(context ,DialogDisplayService.class));
+            context.startForegroundService(new Intent(context, DialogDisplayService.class));
         }
         else {
             context.startService(new Intent(context ,DialogDisplayService.class));

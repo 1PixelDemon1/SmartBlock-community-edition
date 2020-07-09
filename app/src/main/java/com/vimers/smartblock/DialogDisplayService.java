@@ -22,7 +22,7 @@ public class DialogDisplayService extends Service {
     public static boolean isActive = false;
     private static Context context;
 
-    //Inner apps don`t have access to to this service
+    //Outer apps don`t have access to to this service
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {

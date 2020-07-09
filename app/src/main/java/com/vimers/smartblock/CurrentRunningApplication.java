@@ -22,7 +22,7 @@ import static android.content.Context.ACTIVITY_SERVICE;
 
 public class CurrentRunningApplication {
     //Returns package name of currently running application like "com.android.settings"
-    private static int sequence_number = 0;
+    private static int sequence_number = 0; //Used for getting previously installed apps and adding them to blocked list
     public static String getPackageName() {
         String currentApp = "NULL";
         Context context;

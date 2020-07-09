@@ -3,10 +3,12 @@ package com.vimers.smartblock;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class PasswordChecker {
-     static String passwordLine = "";
+    private static String passwordLine = "";
     private static SharedPreferences passwordPreference;
 
     //Checks if given line is equivalent to password line
@@ -32,5 +34,12 @@ public class PasswordChecker {
         }
         passwordLine = password;
         passwordPreference.edit().putString("PASSWORD", password).apply();
+    }
+    //Generates new Password
+    static public String generateNewPassword() {
+        reset();
+        String newPassword = RandomStringUtils.random(passwordLine.length(), true, true);
+        setPassword(newPassword);
+        return newPassword;
     }
 }

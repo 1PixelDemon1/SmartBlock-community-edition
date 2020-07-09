@@ -2,6 +2,8 @@ package com.vimers.smartblock;
 import co.nedim.maildroidx.MaildroidX;
 import co.nedim.maildroidx.MaildroidXType;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 public class MailSender {
     private String text;
     private String title;
@@ -12,19 +14,19 @@ public class MailSender {
         this.text = text;
         this.to = to;
     }
-
+    //Sends mail to a (to) address with (title) header and (text) main body
     public void sendMail() {
         new MaildroidX.Builder()
-        .smtp("smtp.gmail.com")
-        .smtpUsername("jj4971221@gmail.com")
-        .smtpPassword("Nikita!1290")
-        .smtpAuthentication(true)
-        .port("465")
-        .type(MaildroidXType.HTML)
-        .to(to)
-        .from("SmartBlock")
-        .subject(title)
-        .body(text)
-        .mail();
+            .smtp("smtp.gmail.com")
+            .smtpUsername("jj4971221@gmail.com")
+            .smtpPassword("Nikita!1290")
+            .port("465")
+            .type(MaildroidXType.HTML)
+            .to(to)
+            .from("no-reply@gmail.com")
+            .subject(title)
+            .body(text)
+            .isJavascriptDisabled(false)
+            .mail();
     }
 }
