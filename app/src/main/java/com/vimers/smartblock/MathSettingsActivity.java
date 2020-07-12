@@ -24,6 +24,7 @@ public class MathSettingsActivity extends AppCompatActivity {
     private EditText toSubtractionInput;
     private EditText fromMultiplicationInput;
     private EditText toMultiplicationInput;
+    private EditText fromDivisionInput;
     private EditText toDivisionInput;
 
     @Override
@@ -38,13 +39,14 @@ public class MathSettingsActivity extends AppCompatActivity {
         (multiplication = findViewById(R.id.multiplaicationSwitch)).setOnCheckedChangeListener(this::onCheckedChanged);
         (division = findViewById(R.id.divisionSwitch)).setOnCheckedChangeListener(this::onCheckedChanged);
 
-        (fromAdditionInput = findViewById(R.id.fromAdditionInput)).setText(String.format("%d", sharedPreferences.getInt("ADDITION_FROM", 0)));
+        (fromAdditionInput = findViewById(R.id.fromAdditionInput)).setText(String.format("%d", sharedPreferences.getInt("ADDITION_FROM", 1)));
         (toAdditionInput = findViewById(R.id.toAdditionInput)).setText(String.format("%d", sharedPreferences.getInt("ADDITION_TO", 100)));
-        (fromSubtractionInput = findViewById(R.id.fromSubtractionInput)).setText(String.format("%d", sharedPreferences.getInt("SUBTRACTION_FROM", 0)));
+        (fromSubtractionInput = findViewById(R.id.fromSubtractionInput)).setText(String.format("%d", sharedPreferences.getInt("SUBTRACTION_FROM", 1)));
         (toSubtractionInput = findViewById(R.id.toSubtractionInput)).setText(String.format("%d", sharedPreferences.getInt("SUBTRACTION_TO", 100)));
-        (fromMultiplicationInput = findViewById(R.id.fromMultiplicationInput)).setText(String.format("%d", sharedPreferences.getInt("MULTIPLICATION_FROM", 0)));
-        (toMultiplicationInput = findViewById(R.id.toMultiplicationInput)).setText(String.format("%d", sharedPreferences.getInt("MULTIPLICATION_TO", 15)));
-        (toDivisionInput = findViewById(R.id.toDivisionInput)).setText(String.format("%d", sharedPreferences.getInt("DIVISION_TO", 60)));
+        (fromMultiplicationInput = findViewById(R.id.fromMultiplicationInput)).setText(String.format("%d", sharedPreferences.getInt("MULTIPLICATION_FROM", 1)));
+        (toMultiplicationInput = findViewById(R.id.toMultiplicationInput)).setText(String.format("%d", sharedPreferences.getInt("MULTIPLICATION_TO", 20)));
+        (fromDivisionInput = findViewById(R.id.fromDivisionInput)).setText(String.format("%d", sharedPreferences.getInt("DIVISION_FROM", 1)));
+        (toDivisionInput = findViewById(R.id.toDivisionInput)).setText(String.format("%d", sharedPreferences.getInt("DIVISION_TO", 100)));
         fillViews();
 
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
@@ -53,25 +55,26 @@ public class MathSettingsActivity extends AppCompatActivity {
                 compareNumbersInsideInput(fromAdditionInput, toAdditionInput);
                 compareNumbersInsideInput(fromSubtractionInput, toSubtractionInput);
                 compareNumbersInsideInput(fromMultiplicationInput, toMultiplicationInput);
-                if(toDivisionInput.getText().equals("")) toDivisionInput.setText("1");
+                compareNumbersInsideInput(fromDivisionInput, toDivisionInput);
                 saveAll();
             }
         });
     }
 
     private void fillViews() {
+        addition.setChecked(sharedPreferences.getBoolean("ADDITION", true));
+        subtraction.setChecked(sharedPreferences.getBoolean("SUBTRACTION", true));
+        multiplication.setChecked(sharedPreferences.getBoolean("MULTIPLICATION", true));
+        division.setChecked(sharedPreferences.getBoolean("DIVISION", true));
+
         fromAdditionInput.setEnabled(addition.isChecked());
         toAdditionInput.setEnabled(addition.isChecked());
         fromSubtractionInput.setEnabled(subtraction.isChecked());
         toSubtractionInput.setEnabled(subtraction.isChecked());
         fromMultiplicationInput.setEnabled(multiplication.isChecked());
         toMultiplicationInput.setEnabled(multiplication.isChecked());
+        fromDivisionInput.setEnabled(division.isChecked());
         toDivisionInput.setEnabled(division.isChecked());
-
-        addition.setChecked(sharedPreferences.getBoolean("ADDITION", false));
-        subtraction.setChecked(sharedPreferences.getBoolean("SUBTRACTION", false));
-        multiplication.setChecked(sharedPreferences.getBoolean("MULTIPLICATION", false));
-        division.setChecked(sharedPreferences.getBoolean("DIVISION", false));
     }
 
     private void onCheckedChanged(CompoundButton switchView, boolean isChecked) {
@@ -92,6 +95,7 @@ public class MathSettingsActivity extends AppCompatActivity {
         }
         if(switchView == division) {
             sharedPreferences.edit().putBoolean("DIVISION", division.isChecked()).apply();
+            ((EditText) findViewById(R.id.fromDivisionInput)).setEnabled(division.isChecked());
             ((EditText) findViewById(R.id.toDivisionInput)).setEnabled(division.isChecked());
         }
     }
@@ -99,16 +103,11 @@ public class MathSettingsActivity extends AppCompatActivity {
     private void saveAll() {
         sharedPreferences.edit().putInt("ADDITION_FROM", Integer.parseInt(fromAdditionInput.getText().toString())).apply();
         sharedPreferences.edit().putInt("ADDITION_TO", Integer.parseInt(toAdditionInput.getText().toString())).apply();
-        sharedPreferences.edit().putInt("ADDITION_FROM", Integer.parseInt(fromAdditionInput.getText().toString())).apply();
-        sharedPreferences.edit().putInt("ADDITION_TO", Integer.parseInt(toAdditionInput.getText().toString())).apply();
-        sharedPreferences.edit().putInt("SUBTRACTION_FROM", Integer.parseInt(fromSubtractionInput.getText().toString())).apply();
-        sharedPreferences.edit().putInt("SUBTRACTION_TO", Integer.parseInt(toSubtractionInput.getText().toString())).apply();
         sharedPreferences.edit().putInt("SUBTRACTION_FROM", Integer.parseInt(fromSubtractionInput.getText().toString())).apply();
         sharedPreferences.edit().putInt("SUBTRACTION_TO", Integer.parseInt(toSubtractionInput.getText().toString())).apply();
         sharedPreferences.edit().putInt("MULTIPLICATION_FROM", Integer.parseInt(fromMultiplicationInput.getText().toString())).apply();
         sharedPreferences.edit().putInt("MULTIPLICATION_TO", Integer.parseInt(toMultiplicationInput.getText().toString())).apply();
-        sharedPreferences.edit().putInt("MULTIPLICATION_FROM", Integer.parseInt(fromMultiplicationInput.getText().toString())).apply();
-        sharedPreferences.edit().putInt("MULTIPLICATION_TO", Integer.parseInt(toMultiplicationInput.getText().toString())).apply();
+        sharedPreferences.edit().putInt("DIVISION_FROM", Integer.parseInt(fromDivisionInput.getText().toString())).apply();
         sharedPreferences.edit().putInt("DIVISION_TO", Integer.parseInt(toDivisionInput.getText().toString())).apply();
     }
 
@@ -121,5 +120,7 @@ public class MathSettingsActivity extends AppCompatActivity {
             to.setText(from.getText());
             from.setText(var);
         }
+        if(to.getText().toString().equals("0")) to.setText("1");
+        if(from.getText().toString().equals("0")) from.setText("1");
     }
 }
