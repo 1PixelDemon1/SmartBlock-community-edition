@@ -10,6 +10,7 @@ public class OnApplicationAdded extends BroadcastReceiver {
     //Launches when some app is installed on device
     @Override
     public void onReceive(Context context, Intent intent) {
-        BlockedAppsListManager.addApp(context.getPackageManager().getNameForUid(intent.getIntExtra(EXTRA_UID, 0))); //Adds app to blocked list
+        BlockedAppsSet blockedAppsSet = new BlockedAppsSet(context.getApplicationContext());
+        blockedAppsSet.add(context.getPackageManager().getNameForUid(intent.getIntExtra(EXTRA_UID, 0))); //Adds app to blocked list
     }
 }

@@ -23,9 +23,6 @@
     <inspection_tool class="AnonymousClassComplexity" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="m_limit" value="3" />
     </inspection_tool>
-    <inspection_tool class="AnonymousClassMethodCount" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="m_limit" value="1" />
-    </inspection_tool>
     <inspection_tool class="AnonymousClassVariableHidesContainingMethodVariable" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="AnonymousGroup" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ArrayEquality" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -105,7 +102,6 @@
       <option name="ignoreIntegerCharCasts" value="false" />
       <option name="ignoreOverflowingByteCasts" value="false" />
     </inspection_tool>
-    <inspection_tool class="CastToConcreteClass" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="CastToIncompatibleInterface" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ChainedEquality" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ChangeToMethod" enabled="false" level="INFORMATION" enabled_by_default="false" />
@@ -274,6 +270,9 @@
     <inspection_tool class="ExternalizableWithSerializationMethods" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="FallthruInSwitchStatement" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="FeatureEnvy" enabled="true" level="WARNING" enabled_by_default="true">
+      <scope name="Tests" level="WARNING" enabled="false">
+        <option name="ignoreTestCases" value="false" />
+      </scope>
       <option name="ignoreTestCases" value="false" />
     </inspection_tool>
     <inspection_tool class="FieldAccessNotGuarded" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -364,9 +363,6 @@
     <inspection_tool class="GroovyUnusedDeclaration" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="GroovyUnusedIncOrDec" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="GroovyVariableNotAssigned" enabled="false" level="WARNING" enabled_by_default="false" />
-    <inspection_tool class="HardcodedFileSeparators" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="m_recognizeExampleMediaType" value="false" />
-    </inspection_tool>
     <inspection_tool class="HardcodedLineSeparators" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="HasPlatformType" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="HashCodeUsesNonFinalVariable" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -413,10 +409,11 @@
     </inspection_tool>
     <inspection_tool class="IfThenToElvis" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="IfThenToSafeAccess" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
-    <inspection_tool class="IgnoredJUnitTest" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="ImplicitCallToSuper" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="m_ignoreForObjectSubclasses" value="false" />
+    <inspection_tool class="IgnoreResultOfCall" enabled="false" level="WARNING" enabled_by_default="false">
+      <option name="m_reportAllNonLibraryCalls" value="false" />
+      <option name="callCheckString" value="java.io.File,.*,java.io.InputStream,read|skip|available|markSupported,java.io.Reader,read|skip|ready|markSupported,java.lang.Boolean,.*,java.lang.Byte,.*,java.lang.Character,.*,java.lang.Double,.*,java.lang.Float,.*,java.lang.Integer,.*,java.lang.Long,.*,java.lang.Math,.*,java.lang.Object,equals|hashCode|toString,java.lang.Short,.*,java.lang.StrictMath,.*,java.lang.String,.*,java.lang.Thread,interrupted,java.math.BigInteger,.*,java.math.BigDecimal,.*,java.net.InetAddress,.*,java.net.URI,.*,java.util.Arrays,.*,java.util.List,of,java.util.Set,of,java.util.Map,of|ofEntries|entry,java.util.Collections,(?!addAll).*,java.util.UUID,.*,java.util.regex.Matcher,pattern|toMatchResult|start|end|group|groupCount|matches|find|lookingAt|quoteReplacement|replaceAll|replaceFirst|regionStart|regionEnd|hasTransparentBounds|hasAnchoringBounds|hitEnd|requireEnd,java.util.regex.Pattern,.*,java.util.stream.BaseStream,.*" />
     </inspection_tool>
+    <inspection_tool class="IgnoredJUnitTest" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="IncompleteProperty" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="InconsistentLanguageLevel" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="InconsistentLineSeparators" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -517,7 +514,6 @@
       <option name="m_minLength" value="1" />
       <option name="m_maxLength" value="50" />
     </inspection_tool>
-    <inspection_tool class="LocalVariableOfConcreteClass" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="LogStatementGuardedByLogCondition" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="LoggerInitializedWithForeignClass" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="loggerFactoryMethodName" value="getLogger,getLogger,getLog,getLogger" />
@@ -578,11 +574,6 @@
       <option name="ignoreForLoopDeclarations" value="true" />
     </inspection_tool>
     <inspection_tool class="MultipleExceptionsDeclaredOnTestMethod" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="MultipleReturnPointsPerMethod" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="ignoreGuardClauses" value="false" />
-      <option name="ignoreEqualsMethod" value="false" />
-      <option name="m_limit" value="1" />
-    </inspection_tool>
     <inspection_tool class="MultipleTopLevelClassesInFile" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="MultipleTypedDeclaration" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="MultipleVariablesInDeclaration" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -709,13 +700,6 @@
     </inspection_tool>
     <inspection_tool class="PackageWithTooManyClasses" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="limit" value="10" />
-    </inspection_tool>
-    <inspection_tool class="ParameterHidingMemberVariable" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="m_ignoreInvisibleFields" value="true" />
-      <option name="m_ignoreStaticMethodParametersHidingInstanceFields" value="true" />
-      <option name="m_ignoreForConstructors" value="false" />
-      <option name="m_ignoreForPropertySetters" value="false" />
-      <option name="m_ignoreForAbstractMethods" value="false" />
     </inspection_tool>
     <inspection_tool class="ParameterNameDiffersFromOverriddenParameter" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="m_ignoreSingleCharacterNames" value="false" />
@@ -887,7 +871,6 @@
     <inspection_tool class="SubtractionInCompareTo" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="SuperTearDownInFinally" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="SuspiciousArrayCast" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="SuspiciousGetterSetter" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="SuspiciousIndentAfterControlStatement" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="SuspiciousLiteralUnderscore" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="SwitchStatement" enabled="true" level="WARNING" enabled_by_default="true" />

@@ -21,83 +21,101 @@ import java.util.TreeMap;
 import static android.content.Context.ACTIVITY_SERVICE;
 
 public class CurrentRunningApplication {
+    private final Context appContext;
+    private final PackageManager packageManager;
     //Returns package name of currently running application like "com.android.settings"
-    private static int sequence_number = 0; //Used for getting previously installed apps and adding them to blocked list
-    public static String getPackageName() {
-        String currentApp = "NULL";
-        Context context;
-        if((context = MainActivity.getContextOfApplication()) == null) {
-            context = DialogDisplayService.getContext();
-        } //Gets context of this application
+    private int sequenceNumber; //Used for getting previously installed apps and adding them to blocked list
 
-        UsageStatsManager usm = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
-        long time = System.currentTimeMillis();//Getting current time to set time period in which some applications are being active
-        List<UsageStats> appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - 1000 * 1000, time);//Gets a list of active applications during given period of time
-        if (appList != null && appList.size() > 0) {
-            SortedMap<Long, UsageStats> mySortedMap = new TreeMap<Long, UsageStats>();//Creating a Map array and filling it with pairs of UsageStats and time when it was active
-            for (UsageStats usageStats : appList) {
-                mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);
-            }
-            if (mySortedMap != null && !mySortedMap.isEmpty()) {
-                if((currentApp = mySortedMap.get(mySortedMap.lastKey()).getPackageName()).equals("android")) {//checkup of some devices which put "android" on top of UsageStats
-                    try{
-                        removeLastElement(mySortedMap);
-                        currentApp = mySortedMap.get(mySortedMap.lastKey()).getPackageName();
-                    }
-                    catch (Exception e) {
-                        currentApp = "NULL";
-                    }
-                }
-            }
-        }
-        return currentApp;
+    CurrentRunningApplication(Context appContext) {
+        this.appContext = appContext;
+        packageManager = appContext.getPackageManager();
     }
-    //Simply removes last added element from given Map array
+
+    /**
+     * Removes the last added element from given map.
+     */
     private static void removeLastElement(SortedMap<Long, UsageStats> map) {
         map.remove(map.lastKey());
     }
-    //Checks if user stays on Home Screen at the moment
-    @SuppressLint("NewApi")
-    public static boolean isOnHomeScreen() {
-        if (android.os.Build.VERSION.SDK_INT <= 23) { //Works only on older versions
-            Context context;
-            if((context = MainActivity.getContextOfApplication()) == null) {
-                context = DialogDisplayService.getContext();
+
+    public String getPackageName() {
+        UsageStatsManager usm = (UsageStatsManager) appContext.getSystemService(Context.USAGE_STATS_SERVICE);
+        // Get current time to set time period in which some applications are being active
+        long time = System.currentTimeMillis();
+        // Get a list of active applications during given period of time
+        List<UsageStats> appList = usm.queryUsageStats(
+                UsageStatsManager.INTERVAL_DAILY,
+                time - (1000 * 1000),
+                time
+        );
+        if ((appList == null) || (appList.isEmpty()))
+            return null;
+
+        // Creating a Map and filling it with pairs of UsageStats and time when it was active
+        SortedMap<Long, UsageStats> mySortedMap = new TreeMap<Long, UsageStats>();
+        for (UsageStats usageStats : appList) {
+            mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);
+        }
+        if (mySortedMap.isEmpty())
+            return null;
+
+        String currentApp = null;
+
+        // Checkup of some devices which put "android" on top of UsageStats
+        if (
+                (currentApp = mySortedMap.get(mySortedMap.lastKey()).getPackageName())
+                        .equals("android")
+        ) {
+            try {
+                removeLastElement(mySortedMap);
+                currentApp = mySortedMap.get(mySortedMap.lastKey()).getPackageName();
+            } catch (RuntimeException e) {
+                currentApp = null;
             }
-            ActivityManager am = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
-            List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
-            ComponentName currentTask = null;
+        }
 
-            currentTask = taskInfo.get(0).topActivity;
-            final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-            mainIntent.addCategory(Intent.CATEGORY_HOME);
-            PackageManager mPackageManager = context.getPackageManager();
+        return currentApp;
+    }
 
-            List<ResolveInfo> appList = mPackageManager.queryIntentActivities(mainIntent, 0);
+    /**
+     * Checks if the home screen is active now.
+     */
+    @SuppressLint("NewApi")
+    public boolean isOnHomeScreen() {
+        // Works only on older versions
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M)
+            return false;
 
-            for (int i = 0; i < appList.size(); i++) {
-                ResolveInfo apl = appList.get(i);
-                if (currentTask.getPackageName().equals(apl.activityInfo.packageName)) {
-                    return true;
-                }
+        ActivityManager am = (ActivityManager) appContext.getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+        ComponentName currentTask = taskInfo.get(0).topActivity;
+        Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+        mainIntent.addCategory(Intent.CATEGORY_HOME);
+
+        List<ResolveInfo> appList = packageManager.queryIntentActivities(mainIntent, 0);
+
+        for (int i = 0; i < appList.size(); i++) {
+            ResolveInfo apl = appList.get(i);
+            if (currentTask.getPackageName().equals(apl.activityInfo.packageName)) {
+                return true;
             }
         }
         return false;
     }
-    //Adds earlier installed applications to set
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public static void putNewAddedApps() {
-        Context context;
-        if((context = MainActivity.getContextOfApplication()) == null) {
-            context = DialogDisplayService.getContext();
-        }
 
-        ChangedPackages changedPackages = context.getPackageManager().getChangedPackages(sequence_number);
-        if(changedPackages != null) {
-            sequence_number = changedPackages.getSequenceNumber();
-            for (String packageName : changedPackages.getPackageNames()) {
-                BlockedAppsListManager.addApp(packageName);
-            }
+    /**
+     * Adds earlier installed applications to the blocked apps set.
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void putNewAddedApps() {
+        ChangedPackages changedPackages = packageManager.getChangedPackages(sequenceNumber);
+        if (changedPackages == null)
+            return;
+
+        sequenceNumber = changedPackages.getSequenceNumber();
+        BlockedAppsSet blockedAppsSet = new BlockedAppsSet(appContext);
+        for (String packageName : changedPackages.getPackageNames()) {
+            blockedAppsSet.add(packageName);
         }
     }
 }

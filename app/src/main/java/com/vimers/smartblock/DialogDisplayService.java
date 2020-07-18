@@ -10,35 +10,36 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
 
-import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import java.util.Timer;
 
 public class DialogDisplayService extends Service {
-    private String CHANNEL_ID = "DialogDisplayService";
+    public static boolean isActive;
     public static Timer alertDialogAppearanceTimer;
     public static int timePeriod = 15000;
-    public static boolean isActive = false;
+    private final String CHANNEL_ID = "DialogDisplayService";
     private static Context context;
+    private final Binder binder = new Binder();
 
-    //Outer apps don`t have access to to this service
-    @Nullable
+    @SuppressWarnings("ReturnOfInnerClass")
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return binder;
     }
+
     //Basic OnCreate
     @Override
     public void onCreate() {
         super.onCreate();
-        this.context = this;
+        context = this;
         isActive = true;
     }
+
     //Creates new notification channel and sets notification
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        this.context = this;
+        context = this;
         isActive = true;
         createNotificationChannel();
         Intent notificationIntent = new Intent(this, MainActivity.class);
@@ -53,10 +54,20 @@ public class DialogDisplayService extends Service {
         startForeground(1, notification);
 
         alertDialogAppearanceTimer = new Timer();
-        alertDialogAppearanceTimer.schedule(DialogTimer.getTimerTask(), timePeriod, timePeriod);
+        DialogTimer dialogTimer = new DialogTimer(getApplicationContext());
+        alertDialogAppearanceTimer.schedule(dialogTimer.getTimerTask(), timePeriod, timePeriod);
 
         return super.onStartCommand(intent, flags, startId);
     }
+
+    //Resets timer (new loop of displaying)
+    public void resetTimer() {
+        alertDialogAppearanceTimer.cancel();
+        alertDialogAppearanceTimer = new Timer();
+        DialogTimer dialogTimer = new DialogTimer(getApplicationContext());
+        alertDialogAppearanceTimer.schedule(dialogTimer.getTimerTask(), timePeriod, timePeriod);
+    }
+
     //Stops service and timer
     @Override
     public void onDestroy() {
@@ -77,14 +88,14 @@ public class DialogDisplayService extends Service {
             manager.createNotificationChannel(serviceChannel);
         }
     }
-    //Resets timer (new loop of displaying)
-    public static void resetTimer() {
-        alertDialogAppearanceTimer.cancel();
-        alertDialogAppearanceTimer = new Timer();
-        alertDialogAppearanceTimer.schedule(DialogTimer.getTimerTask(), timePeriod, timePeriod);
+
+    class Binder extends android.os.Binder {
+        DialogDisplayService getService() {
+            return DialogDisplayService.this;
+        }
     }
 
-    public static Context getContext(){
+    public static Context getContext() {
         return context;
     }
 }

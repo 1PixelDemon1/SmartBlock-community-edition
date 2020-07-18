@@ -1,30 +1,58 @@
 package com.vimers.smartblock;
 
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.IBinder;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class DialogBlockerManager {
     private static MathExercise mathExercise;
-    public static boolean isActive = false;
+    public static boolean isActive;
     public static int numberOfExercises;
+    @Nullable
+    private DialogDisplayService dialogDisplayService;
+    private final ServiceConnection dialogDisplayServiceConn = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            dialogDisplayService = ((DialogDisplayService.Binder) service).getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            dialogDisplayService = null;
+        }
+    };
+
+    DialogBlockerManager(Context appContext) {
+        Intent dialogServiceIntent = new Intent(appContext, DialogDisplayService.class);
+        appContext.bindService(
+                dialogServiceIntent,
+                dialogDisplayServiceConn,
+                Context.BIND_AUTO_CREATE
+        );
+    }
 
     //Builds Alert dialog and returns it
     public static AlertDialog getDialog() {
         Context context;
-        if((context = MainActivity.getContextOfApplication()) == null) {
+        if ((context = MainActivity.getContextOfApplication()) == null) {
             context = DialogDisplayService.getContext();
         }
 
@@ -53,16 +81,17 @@ public class DialogBlockerManager {
 
         return alertDialog;
     }
+
     //Returns activities to do when button clicked
-    public static OnClickListener getButtonAction(final AlertDialog alertDialog) {
+    public OnClickListener getButtonAction(AlertDialog alertDialog) {
 
         ((EditText) alertDialog.findViewById(R.id.answerInput)).setOnKeyListener(new View.OnKeyListener() { //When "Enter" is pressed we do the same as if we pressed ok
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-            if(event.getAction() == KeyEvent.ACTION_DOWN && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                buttonAction(alertDialog);
-                return true;
-            }
-            return false;
+                if (event.getAction() == KeyEvent.ACTION_DOWN && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    buttonAction(alertDialog);
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -85,26 +114,28 @@ public class DialogBlockerManager {
     private static void fillMathExercise(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("MATH_SETTINGS", Context.MODE_PRIVATE);
         List<MathActions> mathActions = new LinkedList<MathActions>();
-        if(sharedPreferences.getBoolean("ADDITION", true)) mathActions.add(MathActions.ADDITION);
-        if(sharedPreferences.getBoolean("SUBTRACTION", false)) mathActions.add(MathActions.SUBTRACTION);
-        if(sharedPreferences.getBoolean("MULTIPLICATION", false)) mathActions.add(MathActions.MULTIPLICATION);
-        if(sharedPreferences.getBoolean("DIVISION", false)) mathActions.add(MathActions.DIVISION);
+        if (sharedPreferences.getBoolean("ADDITION", true)) mathActions.add(MathActions.ADDITION);
+        if (sharedPreferences.getBoolean("SUBTRACTION", false))
+            mathActions.add(MathActions.SUBTRACTION);
+        if (sharedPreferences.getBoolean("MULTIPLICATION", false))
+            mathActions.add(MathActions.MULTIPLICATION);
+        if (sharedPreferences.getBoolean("DIVISION", false)) mathActions.add(MathActions.DIVISION);
         mathExercise = new MathExercise(mathActions);
     }
+
     //Actually button action
-    private static void buttonAction(AlertDialog alertDialog) {
+    private void buttonAction(AlertDialog alertDialog) {
         int answer;
-        try{
+        try {
             answer = Integer.parseInt(((EditText) alertDialog.findViewById(R.id.answerInput)).getText().toString());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             answer = 0;
         }
         if (mathExercise.isCorrect(answer) || answer == 1) { //TODO DELETE ELSE STATEMENT
-            if(--numberOfExercises <= 0) {
+            if (--numberOfExercises <= 0) {
                 alertDialog.dismiss();
                 isActive = false;
-                DialogDisplayService.resetTimer();
+                dialogDisplayService.resetTimer();
             } else {
                 clearInput(alertDialog);
                 fillDialog(alertDialog);
