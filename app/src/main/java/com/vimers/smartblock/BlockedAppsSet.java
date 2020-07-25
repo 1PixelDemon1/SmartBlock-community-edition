@@ -3,9 +3,12 @@ package com.vimers.smartblock;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.ChangedPackages;
 import android.content.pm.PackageManager;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -27,6 +30,7 @@ public class BlockedAppsSet {
     private final Context appContext;
     private final SharedPreferences appsSetSharedPrefs;
     private Set<String> apps;
+    private static int packageSequenceNumber;
 
     public BlockedAppsSet(Context appContext) {
         this.appContext = appContext;
@@ -141,5 +145,18 @@ public class BlockedAppsSet {
         addUserInstalled();
         addFromSpecialBlocklist();
         save();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void updateWithNewApps() {
+        PackageManager packageManager = appContext.getPackageManager();
+        ChangedPackages newPackages = packageManager.getChangedPackages(packageSequenceNumber);
+        if (newPackages == null)
+            return;
+
+        packageSequenceNumber = newPackages.getSequenceNumber();
+        for (String packageName : newPackages.getPackageNames()) {
+            add(packageName);
+        }
     }
 }

@@ -5,7 +5,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
@@ -15,12 +14,16 @@ import androidx.core.app.NotificationCompat;
 import java.util.Timer;
 
 public class DialogDisplayService extends Service {
-    public static boolean isActive;
-    public static Timer alertDialogAppearanceTimer;
+    private static final String CHANNEL_ID = "DialogDisplayService";
+    private boolean running;
+    private Timer alertDialogTimer;
     public static int timePeriod = 15000;
-    private final String CHANNEL_ID = "DialogDisplayService";
-    private static Context context;
+    private BlockedAppsSet blockedAppsSet;
     private final Binder binder = new Binder();
+
+    public boolean isRunning() {
+        return running;
+    }
 
     @SuppressWarnings("ReturnOfInnerClass")
     @Override
@@ -32,48 +35,9 @@ public class DialogDisplayService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        context = this;
-        isActive = true;
-    }
-
-    //Creates new notification channel and sets notification
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        context = this;
-        isActive = true;
+        running = true;
+        blockedAppsSet = new BlockedAppsSet(getApplicationContext());
         createNotificationChannel();
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                0, notificationIntent, 0);
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("SmartBlock")
-                .setContentText("Приложение запущено")
-                .setSmallIcon(R.drawable.ic_launcher_background)
-                .setContentIntent(pendingIntent)
-                .build();
-        startForeground(1, notification);
-
-        alertDialogAppearanceTimer = new Timer();
-        DialogTimer dialogTimer = new DialogTimer(getApplicationContext());
-        alertDialogAppearanceTimer.schedule(dialogTimer.getTimerTask(), timePeriod, timePeriod);
-
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-    //Resets timer (new loop of displaying)
-    public void resetTimer() {
-        alertDialogAppearanceTimer.cancel();
-        alertDialogAppearanceTimer = new Timer();
-        DialogTimer dialogTimer = new DialogTimer(getApplicationContext());
-        alertDialogAppearanceTimer.schedule(dialogTimer.getTimerTask(), timePeriod, timePeriod);
-    }
-
-    //Stops service and timer
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        isActive = false;
-        alertDialogAppearanceTimer.cancel();
     }
 
     //Creates Notification channel
@@ -89,14 +53,53 @@ public class DialogDisplayService extends Service {
         }
     }
 
+    //Creates new notification channel and sets notification
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        displayNotification();
+
+        alertDialogTimer = new Timer();
+        BlockTimerTask blockTimerTask =
+                new BlockTimerTask(getApplicationContext(), blockedAppsSet);
+        alertDialogTimer.schedule(blockTimerTask, timePeriod, timePeriod);
+
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    private void displayNotification() {
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                0, notificationIntent, 0);
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("SmartBlock")
+                .setContentText("Приложение запущено")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentIntent(pendingIntent)
+                .build();
+        startForeground(1, notification);
+    }
+
+    //Resets timer (new loop of displaying)
+    public void resetTimer() {
+        alertDialogTimer.cancel();
+        alertDialogTimer = new Timer();
+        BlockTimerTask blockTimerTask =
+                new BlockTimerTask(getApplicationContext(), blockedAppsSet);
+        alertDialogTimer.schedule(blockTimerTask, timePeriod, timePeriod);
+    }
+
+    //Stops service and timer
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        running = false;
+        alertDialogTimer.cancel();
+    }
+
     class Binder extends android.os.Binder {
         DialogDisplayService getService() {
             return DialogDisplayService.this;
         }
-    }
-
-    public static Context getContext() {
-        return context;
     }
 }
 

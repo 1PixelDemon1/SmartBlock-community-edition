@@ -7,12 +7,11 @@ import android.app.usage.UsageStatsManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ChangedPackages;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Build;
 
-import androidx.annotation.RequiresApi;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.SortedMap;
@@ -20,13 +19,11 @@ import java.util.TreeMap;
 
 import static android.content.Context.ACTIVITY_SERVICE;
 
-public class CurrentRunningApplication {
+public class CurrentAppMonitor {
     private final Context appContext;
     private final PackageManager packageManager;
-    //Returns package name of currently running application like "com.android.settings"
-    private int sequenceNumber; //Used for getting previously installed apps and adding them to blocked list
 
-    CurrentRunningApplication(Context appContext) {
+    CurrentAppMonitor(Context appContext) {
         this.appContext = appContext;
         packageManager = appContext.getPackageManager();
     }
@@ -38,43 +35,49 @@ public class CurrentRunningApplication {
         map.remove(map.lastKey());
     }
 
-    public String getPackageName() {
-        UsageStatsManager usm = (UsageStatsManager) appContext.getSystemService(Context.USAGE_STATS_SERVICE);
-        // Get current time to set time period in which some applications are being active
-        long time = System.currentTimeMillis();
-        // Get a list of active applications during given period of time
-        List<UsageStats> appList = usm.queryUsageStats(
-                UsageStatsManager.INTERVAL_DAILY,
-                time - (1000 * 1000),
-                time
-        );
-        if ((appList == null) || (appList.isEmpty()))
-            return null;
-
+    @Nullable
+    private static String getLastRunningApp(List<UsageStats> appList) {
         // Creating a Map and filling it with pairs of UsageStats and time when it was active
-        SortedMap<Long, UsageStats> mySortedMap = new TreeMap<Long, UsageStats>();
+        SortedMap<Long, UsageStats> lastRunningAppsMap = new TreeMap<>();
         for (UsageStats usageStats : appList) {
-            mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);
+            lastRunningAppsMap.put(usageStats.getLastTimeUsed(), usageStats);
         }
-        if (mySortedMap.isEmpty())
-            return null;
 
         String currentApp = null;
 
         // Checkup of some devices which put "android" on top of UsageStats
         if (
-                (currentApp = mySortedMap.get(mySortedMap.lastKey()).getPackageName())
+                (currentApp = lastRunningAppsMap.get(lastRunningAppsMap.lastKey()).getPackageName())
                         .equals("android")
         ) {
             try {
-                removeLastElement(mySortedMap);
-                currentApp = mySortedMap.get(mySortedMap.lastKey()).getPackageName();
+                removeLastElement(lastRunningAppsMap);
+                currentApp = lastRunningAppsMap.get(lastRunningAppsMap.lastKey()).getPackageName();
             } catch (RuntimeException e) {
                 currentApp = null;
             }
         }
 
         return currentApp;
+    }
+
+    private static List<UsageStats> getRecentActiveApps(UsageStatsManager usm) {
+        // Get current time to set time period in which some applications are being active
+        long time = System.currentTimeMillis();
+        // Get a list of active applications during given period of time
+        return usm.queryUsageStats(
+                UsageStatsManager.INTERVAL_DAILY,
+                time - (1000 * 1000),
+                time
+        );
+    }
+
+    public String getPackageName() {
+        UsageStatsManager usm = (UsageStatsManager) appContext.getSystemService(Context.USAGE_STATS_SERVICE);
+        List<UsageStats> appList = getRecentActiveApps(usm);
+        if ((appList == null) || (appList.isEmpty()))
+            return null;
+        return getLastRunningApp(appList);
     }
 
     /**
@@ -101,21 +104,5 @@ public class CurrentRunningApplication {
             }
         }
         return false;
-    }
-
-    /**
-     * Adds earlier installed applications to the blocked apps set.
-     */
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void putNewAddedApps() {
-        ChangedPackages changedPackages = packageManager.getChangedPackages(sequenceNumber);
-        if (changedPackages == null)
-            return;
-
-        sequenceNumber = changedPackages.getSequenceNumber();
-        BlockedAppsSet blockedAppsSet = new BlockedAppsSet(appContext);
-        for (String packageName : changedPackages.getPackageNames()) {
-            blockedAppsSet.add(packageName);
-        }
     }
 }
