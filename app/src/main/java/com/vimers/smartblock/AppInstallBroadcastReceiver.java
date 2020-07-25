@@ -6,11 +6,13 @@ import android.content.Intent;
 
 import static android.content.Intent.EXTRA_UID;
 
-public class OnApplicationAdded extends BroadcastReceiver {
+public class AppInstallBroadcastReceiver extends BroadcastReceiver {
     //Launches when some app is installed on device
     @Override
     public void onReceive(Context context, Intent intent) {
         BlockedAppsSet blockedAppsSet = new BlockedAppsSet(context.getApplicationContext());
-        blockedAppsSet.add(context.getPackageManager().getNameForUid(intent.getIntExtra(EXTRA_UID, 0))); //Adds app to blocked list
+        blockedAppsSet.add(
+                context.getPackageManager().getNameForUid(intent.getIntExtra(EXTRA_UID, 0))
+        );
     }
 }

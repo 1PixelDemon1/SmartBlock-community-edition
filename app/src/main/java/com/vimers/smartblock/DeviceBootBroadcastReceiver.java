@@ -5,16 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
-public class OnDeviceBoot extends BroadcastReceiver {
+public class DeviceBootBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
         //Starts Service of background working
-        if (Build.VERSION.SDK_INT >= 26) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             context.startForegroundService(new Intent(context, DialogDisplayService.class));
-        }
-        else {
-            context.startService(new Intent(context ,DialogDisplayService.class));
-        }
+        else
+            context.startService(new Intent(context, DialogDisplayService.class));
     }
 }

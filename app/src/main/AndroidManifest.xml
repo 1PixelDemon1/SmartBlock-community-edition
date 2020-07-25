@@ -25,17 +25,18 @@
         android:theme="@style/AppTheme">
 
         <!-- Receivers -->
-        <receiver android:name=".OnApplicationAdded"
+        <receiver
+            android:name=".AppInstallBroadcastReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED"/>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
 
         <receiver
-            android:name=".OnDeviceBoot"
+            android:name=".DeviceBootBroadcastReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
