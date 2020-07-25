@@ -1,28 +1,32 @@
 package com.vimers.smartblock;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.vimers.smartblock.persistence.PersistentObject;
 
 public class InputPasswordActivity extends AppCompatActivity {
     private Intent whereToGoIfCorrect;
     private EditText passwordField;
+
+    private PersistentObject<AppSettings> appSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_password);
         passwordField = findViewById(R.id.passwordInputEdit);
-        whereToGoIfCorrect = new Intent(this.getIntent().getStringExtra("INTENT")); //Intent, which contains next going activity.(Where to go if password is correct)
-        findViewById(R.id.checkPasswordButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkPassword();
-            }
-        });
+        whereToGoIfCorrect = new Intent(getIntent().getStringExtra("INTENT")); //Intent, which contains next going activity.(Where to go if password is correct)
+        appSettings = new PersistentObject<>(
+                this,
+                AppSettings.PERSISTENT_OBJECT_NAME,
+                AppSettings.class
+        );
+
+        findViewById(R.id.checkPasswordButton).setOnClickListener(v -> checkPassword());
     }
 
     @Override
@@ -32,13 +36,12 @@ public class InputPasswordActivity extends AppCompatActivity {
     }
 
     private void checkPassword() {  //Checks if password is correct and sends user to his destination
-        if(PasswordChecker.isCorrect(passwordField.getText().toString())) {
-            passwordField.setText("");
+        passwordField.setText("");
+        String inPassword = passwordField.getText().toString();
+        String actualPassword = appSettings.getObj().getPassword();
+        if (inPassword.equals(actualPassword)) {
             finish();
             startActivity(whereToGoIfCorrect);
-        }
-        else {
-            passwordField.setText("");
         }
     }
 }
