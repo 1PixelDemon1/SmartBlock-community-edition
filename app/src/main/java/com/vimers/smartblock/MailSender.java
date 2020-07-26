@@ -1,19 +1,19 @@
 package com.vimers.smartblock;
+
 import co.nedim.maildroidx.MaildroidX;
 import co.nedim.maildroidx.MaildroidXType;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 public class MailSender {
-    private String text;
-    private String title;
-    private String to;
+    private final String text;
+    private final String title;
+    private final String to;
 
     MailSender(String title, String text, String to) {
         this.title = title;
         this.text = text;
         this.to = to;
     }
+
     //Sends mail to a (to) address with (title) header and (text) main body
     public void sendMail() {
         new MaildroidX.Builder()

@@ -1,25 +1,25 @@
 package com.vimers.smartblock;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
-import android.widget.ImageButton;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ImageButton;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.vimers.smartblock.persistence.PersistentObject;
+
+import kotlin.Unit;
 
 public class RegistrationActivity extends AppCompatActivity {
 
     private EditText childNameEdit;
     private EditText passwordEdit;
     private ImageButton completeRegistrationButton;
+
+    private PersistentObject<AppSettings> appSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,56 +29,49 @@ public class RegistrationActivity extends AppCompatActivity {
         childNameEdit = findViewById(R.id.childNameEdit);
         passwordEdit = findViewById(R.id.passwordEdit);
         completeRegistrationButton = findViewById(R.id.completeRegistrationBut);
-        //TODO delete this line
-        completeRegistrationButton.setEnabled(true);
-        TextWatcher textWatcher = new TextWatcher() {
 
+        appSettings = new PersistentObject<>(
+                this,
+                AppSettings.PERSISTENT_OBJECT_NAME,
+                AppSettings.class
+        );
+
+        TextWatcher textWatcher = new TextWatcher() {
             public void afterTextChanged(Editable s) {
-                savePassword();
-                enableButton();
+                completeRegistrationButton.setEnabled(isInputDataCorrect());
             }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            private boolean isInputDataCorrect() {
+                return (childNameEdit.length() != 0)
+                        && (passwordEdit.length() != 0);
+            }
 
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
         };
 
         childNameEdit.addTextChangedListener(textWatcher);
         passwordEdit.addTextChangedListener(textWatcher);
 
-        completeRegistrationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRegistrationCompleted();
-            }
-        });
+        completeRegistrationButton.setOnClickListener(v -> onRegistrationCompleted());
     }
-    //Saves inputted password
-    private void savePassword() {
-        PasswordChecker.setPassword(passwordEdit.getText().toString());
+
+    /**
+     * Saves the inputted password.
+     */
+    private void saveData() {
+        appSettings.edit(settings -> {
+            settings.setChildName(childNameEdit.getText().toString());
+            settings.setPassword(passwordEdit.getText().toString());
+            return Unit.INSTANCE;
+        }).save();
     }
-    //Enables or not enables continue button
-    private void enableButton() {
-        completeRegistrationButton.setEnabled(childNameEdit.length() != 0 && passwordEdit.length()!= 0);
-    }
-    //OnClick action
+
     private void onRegistrationCompleted() {
-        try{
-            if(DialogDisplayService.isActive) {
-                stopService(new Intent(this ,DialogDisplayService.class));
-                Toast.makeText(this, "Выключил", Toast.LENGTH_LONG).show();
-            }
-            else {
-                startService(new Intent(this ,DialogDisplayService.class));
-                Toast.makeText(this, "Включил", Toast.LENGTH_LONG).show();
-            }
-        }
-        catch (Exception e) {}
-
-        //startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
-        //startActivity(new Intent("com.vimers.smartblock.activity_app_list"));
-        startActivity(new Intent("com.vimers.smartblock.activity_settings"));
-        //startActivity(new Intent("com.vimers.smartblock.activity_input_password").putExtra("INTENT", "com.vimers.smartblock.activity_app_list"));
+        saveData();
+        startActivity(new Intent(this, SettingsActivity.class));
     }
-
 }

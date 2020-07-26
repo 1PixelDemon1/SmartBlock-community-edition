@@ -1,22 +1,25 @@
 package com.vimers.smartblock;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.RecyclerView;
+
 public class AppListActivity extends AppCompatActivity {
 
     protected static RecyclerView recyclerView;
+    private BlockedAppsSet blockedAppsSet;
+
     //Basic OnCreate
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        blockedAppsSet = new BlockedAppsSet(getApplicationContext());
         setContentView(R.layout.activity_app_list);
         setRecyclerView();
         setDivider();
@@ -36,15 +39,15 @@ public class AppListActivity extends AppCompatActivity {
 
         switch (id) {
             case R.id.appListMenuItemAll:
-                BlockedAppsListManager.setAllPossible();
+                blockedAppsSet.setAllInstalled();
                 setRecyclerView();
                 return true;
             case R.id.appListMenuItemNone:
-                BlockedAppsListManager.clearSet();
+                blockedAppsSet.clear();
                 setRecyclerView();
                 return true;
             case R.id.appListMenuItemAuto:
-                BlockedAppsListManager.setAllAuto();
+                blockedAppsSet.setAuto();
                 setRecyclerView();
             default:
                 return super.onOptionsItemSelected(item);

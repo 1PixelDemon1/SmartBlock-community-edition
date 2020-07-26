@@ -12,4 +12,5 @@
     <string name="defaultContinueButtonText">Ок</string>
     <string name="device_admin_description">Разрешение необходимо, чтобы предотвратить случайное удаление приложения ребенком</string>
     <string name="admin_disable_requested_warning">При выключении ребенок может легко удалить приложение, вы уверены?</string>
+    <string name="wrong_answer_message">Неправильно, попробуй еще раз!</string>
 </resources>
