@@ -3,48 +3,37 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/baground"
+    android:background="@color/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="291dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="84dp"
-        android:text="Лимиты программы"
-        android:textColor="#000000"
-        android:textColorHint="#00FF0000"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/goMathSettingsButton"
-        android:layout_width="197dp"
-        android:layout_height="107dp"
-        android:layout_marginTop="36dp"
-        android:text="Здесь будет картинка матtматики (кнопка картинка)"
+        android:layout_width="194dp"
+        android:layout_height="42dp"
+        android:text="Text"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.114" />
 
-    <ImageButton
+    <Button
         android:id="@+id/goAppListButton"
         android:layout_width="289dp"
         android:layout_height="65dp"
         android:background="@null"
         android:padding="0dp"
         android:scaleType="fitXY"
+        android:text="AppList"
         app:layout_constraintBottom_toTopOf="@+id/goBackgroundWorkingButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/goMathSettingsButton"
-        app:layout_constraintVertical_bias="0.487"
-        app:srcCompat="@drawable/vibirite_prilojenie" />
+        app:layout_constraintVertical_bias="0.487" />
 
-    <ImageButton
+    <Button
         android:id="@+id/goBackgroundWorkingButton"
         android:layout_width="181dp"
         android:layout_height="78dp"
@@ -52,14 +41,14 @@
         android:background="@null"
         android:padding="0dp"
         android:scaleType="fitXY"
+        android:text="Background"
         app:layout_constraintBottom_toTopOf="@+id/completeSettingsButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/sapusk_v_vone" />
+        app:layout_constraintVertical_bias="1.0" />
 
-    <ImageButton
+    <Button
         android:id="@+id/completeSettingsButton"
         android:layout_width="129dp"
         android:layout_height="60dp"
@@ -67,10 +56,10 @@
         android:background="@null"
         android:padding="0dp"
         android:scaleType="fitXY"
+        android:text="GO"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/gaaatowo" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,7 @@
 package com.vimers.smartblock
 
 class AppSettings {
-    var childName: String? = null
+    var mail: String? = null
     var password: String? = null
 
     companion object {

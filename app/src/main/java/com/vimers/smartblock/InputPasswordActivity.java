@@ -2,6 +2,7 @@ package com.vimers.smartblock;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,9 +37,10 @@ public class InputPasswordActivity extends AppCompatActivity {
     }
 
     private void checkPassword() {  //Checks if password is correct and sends user to his destination
-        passwordField.setText("");
         String inPassword = passwordField.getText().toString();
         String actualPassword = appSettings.getObj().getPassword();
+
+        passwordField.setText("");
         if (inPassword.equals(actualPassword)) {
             finish();
             startActivity(whereToGoIfCorrect);
