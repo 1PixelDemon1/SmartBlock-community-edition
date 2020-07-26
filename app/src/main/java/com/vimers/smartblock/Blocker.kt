@@ -40,6 +40,6 @@ class Blocker(private val context: Context) {
             dialog.show()
     }
 
-    private fun canBlock() = !currentAppMonitor.isOnHomeScreen &&
-            blockedAppsSet.all.contains(currentAppMonitor.packageName)
+    private fun canBlock() = !currentAppMonitor.isOnHomeScreen() &&
+            blockedAppsSet.all.contains(currentAppMonitor.getCurrentRunningApp())
 }
