@@ -65,7 +65,17 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 gifImageView.setImageDrawable(gifDrawable);
                 if(getSharedPreferences("APP_STATE", MODE_PRIVATE).getBoolean("REGISTRATION_COMPLETED", false)) {
                     startActivity(new Intent("com.vimers.smartblock.activity_input_password").putExtra("INTENT", "com.vimers.smartblock.activity_settings"));
-                } else {
+                    try{
+                        if(DialogDisplayService.isRunning()) {
+                            stopService(new Intent(MainActivity.this ,DialogDisplayService.class));
+                        }
+                        else {
+                            startService(new Intent(MainActivity.this ,DialogDisplayService.class));
+                        }
+                    }
+                    catch (Exception e) {}
+                }
+                else {
                     startActivity(new Intent("com.vimers.smartblock.activity_registration"));
                 }
 
