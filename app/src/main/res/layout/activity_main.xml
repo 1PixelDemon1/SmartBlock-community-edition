@@ -4,23 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#51C8FF"
+    android:background="@color/background"
     tools:context=".MainActivity">
 
-
-    <ImageButton
-        android:id="@+id/goRegistrationBut"
-        android:layout_width="274dp"
-        android:layout_height="54dp"
-        android:background="@null"
-        android:padding="0dp"
-        android:scaleType="fitXY"
+    <LinearLayout
+        android:layout_width="260dp"
+        android:layout_height="260dp"
+        android:layout_weight="1"
+        android:background="@drawable/round"
+        android:paddingLeft="30dp"
+        android:paddingTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.901"
-        app:srcCompat="@drawable/goregistrationbut" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/gif"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/lock_simple"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

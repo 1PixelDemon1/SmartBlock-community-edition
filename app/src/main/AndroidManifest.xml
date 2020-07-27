@@ -25,18 +25,17 @@
         android:theme="@style/AppTheme">
 
         <!-- Receivers -->
-        <receiver
-            android:name=".AppInstallBroadcastReceiver"
+        <receiver android:name=".OnApplicationAdded"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_ADDED"/>
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
 
         <receiver
-            android:name=".DeviceBootBroadcastReceiver"
+            android:name=".OnDeviceBoot"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -53,6 +52,13 @@
             android:exported="true" />
 
         <!-- Activities -->
+        <activity android:name=".NavigationActivity">
+            <intent-filter>
+                <action android:name="com.vimers.smartblock.activity_navigation" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".DurationSettingsActivity">
             <intent-filter>
                 <action android:name="com.vimers.smartblock.activity_duration_settings" />

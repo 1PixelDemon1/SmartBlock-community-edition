@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,9 +15,9 @@ import kotlin.Unit;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    private EditText childNameEdit;
+    private EditText mailEdit;
     private EditText passwordEdit;
-    private ImageButton completeRegistrationButton;
+    private Button completeRegistrationButton;
 
     private PersistentObject<AppSettings> appSettings;
 
@@ -26,7 +26,7 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        childNameEdit = findViewById(R.id.childNameEdit);
+        mailEdit = findViewById(R.id.mailEdit);
         passwordEdit = findViewById(R.id.passwordEdit);
         completeRegistrationButton = findViewById(R.id.completeRegistrationBut);
 
@@ -42,7 +42,7 @@ public class RegistrationActivity extends AppCompatActivity {
             }
 
             private boolean isInputDataCorrect() {
-                return (childNameEdit.length() != 0)
+                return (mailEdit.length() != 0)
                         && (passwordEdit.length() != 0);
             }
 
@@ -53,7 +53,7 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         };
 
-        childNameEdit.addTextChangedListener(textWatcher);
+        mailEdit.addTextChangedListener(textWatcher);
         passwordEdit.addTextChangedListener(textWatcher);
 
         completeRegistrationButton.setOnClickListener(v -> onRegistrationCompleted());
@@ -64,7 +64,7 @@ public class RegistrationActivity extends AppCompatActivity {
      */
     private void saveData() {
         appSettings.edit(settings -> {
-            settings.setChildName(childNameEdit.getText().toString());
+            settings.setMail(mailEdit.getText().toString());
             settings.setPassword(passwordEdit.getText().toString());
             return Unit.INSTANCE;
         }).save();
@@ -72,6 +72,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void onRegistrationCompleted() {
         saveData();
+        getSharedPreferences("APP_STATE", MODE_PRIVATE).edit().putBoolean("REGISTRATION_COMPLETED", true).apply();
         startActivity(new Intent(this, SettingsActivity.class));
     }
 }

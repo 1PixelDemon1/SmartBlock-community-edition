@@ -15,13 +15,13 @@ import java.util.Timer;
 
 public class DialogDisplayService extends Service {
     private static final String CHANNEL_ID = "DialogDisplayService";
-    private boolean running;
+    private static boolean running;
     private Timer alertDialogTimer;
     public static int timePeriod = 15000;
     private BlockedAppsSet blockedAppsSet;
     private final Binder binder = new Binder();
 
-    public boolean isRunning() {
+    public static boolean isRunning() {
         return running;
     }
 

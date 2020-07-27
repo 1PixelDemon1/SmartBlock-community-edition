@@ -1,6 +1,7 @@
 package com.vimers.smartblock
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.view.View
@@ -11,11 +12,13 @@ import com.vimers.smartblock.exercises.ExerciseFactory
 
 class Blocker(private val context: Context) {
     private lateinit var exercise: Exercise
-    private val dialog = BlockDialogFactory.createDialog(context, exercise)
+    private val dialog: Dialog
     private val currentAppMonitor = CurrentAppMonitor(context)
     private val blockedAppsSet = BlockedAppsSet(context)
 
     init {
+        generateNewExercise()
+        dialog = BlockDialogFactory.createDialog(context, exercise)
         dialog.setButton(AlertDialog.BUTTON_POSITIVE, "Проверить") { dialogInterface, _ ->
             checkAnswer(dialogInterface)
         }
