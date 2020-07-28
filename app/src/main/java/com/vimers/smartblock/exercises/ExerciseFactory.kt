@@ -31,7 +31,7 @@ object ExerciseFactory {
             exerciseClass: KClass<out Exercise>
     ): Exercise.Settings {
         val exerciseSettingsClass = getExerciseSettingsClass(exerciseClass)
-        return PersistentObject(context, exerciseSettingsClass.simpleName!!, exerciseSettingsClass)
+        return PersistentObject(context, exerciseSettingsClass)
                 .obj
     }
 

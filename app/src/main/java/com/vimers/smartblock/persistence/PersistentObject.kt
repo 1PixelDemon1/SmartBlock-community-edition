@@ -13,15 +13,25 @@ import kotlin.reflect.full.createInstance
  */
 class PersistentObject<T : Any>(
         private val context: Context,
-        private val name: String,
-        private val type: KClass<T>
+        private val type: KClass<T>,
+        private val name: String
 ) {
     private companion object {
         /** Shared Preferences file name where all persistent objects reside. */
         const val PREFS_FILE = "persistent_objects"
     }
 
-    constructor(context: Context, name: String, type: Class<T>) : this(context, name, type.kotlin)
+    constructor(context: Context, type: Class<T>, name: String) : this(context, type.kotlin, name)
+    constructor(context: Context, type: KClass<T>) : this(
+            context,
+            type,
+            type.simpleName ?: throw IllegalArgumentException(
+                    "could not get the qualified name of the passed KClass instance, " +
+                            "is it anonymous?"
+            )
+    )
+
+    constructor(context: Context, type: Class<T>) : this(context, type.kotlin)
 
     private val gson = Gson()
     private val prefs = context.getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE)
@@ -69,7 +79,7 @@ private fun sample(context: Context) {
         var property = ""
     }
 
-    val persistentObject = PersistentObject<Test>(context, "Test", Test::class)
+    val persistentObject = PersistentObject<Test>(context, Test::class)
     persistentObject.edit {
         property = "Hello"
     }.save()

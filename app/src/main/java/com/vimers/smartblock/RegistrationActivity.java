@@ -30,11 +30,7 @@ public class RegistrationActivity extends AppCompatActivity {
         passwordEdit = findViewById(R.id.passwordEdit);
         completeRegistrationButton = findViewById(R.id.completeRegistrationBut);
 
-        appSettings = new PersistentObject<>(
-                this,
-                AppSettings.PERSISTENT_OBJECT_NAME,
-                AppSettings.class
-        );
+        appSettings = new PersistentObject<>(this, AppSettings.class);
 
         TextWatcher textWatcher = new TextWatcher() {
             public void afterTextChanged(Editable s) {

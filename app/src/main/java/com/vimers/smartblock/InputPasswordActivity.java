@@ -2,7 +2,6 @@ package com.vimers.smartblock;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,11 +20,7 @@ public class InputPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_input_password);
         passwordField = findViewById(R.id.passwordInputEdit);
         whereToGoIfCorrect = new Intent(getIntent().getStringExtra("INTENT")); //Intent, which contains next going activity.(Where to go if password is correct)
-        appSettings = new PersistentObject<>(
-                this,
-                AppSettings.PERSISTENT_OBJECT_NAME,
-                AppSettings.class
-        );
+        appSettings = new PersistentObject<>(this, AppSettings.class);
 
         findViewById(R.id.checkPasswordButton).setOnClickListener(v -> checkPassword());
     }
