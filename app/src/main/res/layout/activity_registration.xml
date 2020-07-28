@@ -7,51 +7,57 @@
     android:background="@color/background"
     tools:context=".RegistrationActivity">
 
-
-    <EditText
-        android:id="@+id/mailEdit"
-        android:layout_width="279dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="44dp"
-        android:ems="10"
-        android:hint="@string/mailEditHint"
-        android:inputType="textEmailAddress"
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordEdit"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-        android:id="@+id/passwordEdit"
-        android:layout_width="278dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="200dp"
-        android:ems="10"
-        android:hint="@string/passwordEditHint"
-        android:inputType="textPassword"
-        android:textColor="#000000"
-        android:textColorHighlight="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/emailEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Ваш E-Mail"
+            android:inputType="textEmailAddress" />
 
-    <Button
-        android:id="@+id/completeRegistrationBut"
-        android:layout_width="133dp"
-        android:layout_height="61dp"
-        android:layout_marginBottom="68dp"
-        android:background="@null"
-        android:clickable="false"
-        android:padding="0dp"
-        android:scaleType="fitXY"
-        android:text="GO"
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Мы отправим вам сообщение, если ребенок попытается удалить это приложение." />
+
+        <EditText
+            android:id="@+id/passwordEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Пароль"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Придумайте пароль, чтобы ребенок не смог отключить задачи." />
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:onClick="doRegistration"
+        android:tint="#FFFFFF"
+        app:backgroundTint="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mailEdit"
-        app:layout_constraintVertical_bias="1.0" />
-
+        app:srcCompat="@drawable/ic_done" />
 </androidx.constraintlayout.widget.ConstraintLayout>
