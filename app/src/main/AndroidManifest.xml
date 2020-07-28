@@ -21,37 +21,16 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/AppTheme">
 
-        <!-- Receivers -->
-        <receiver android:name=".OnApplicationAdded"
-            android:enabled="true"
-            android:exported="true">
+        <activity android:name=".activities.PasswordInputActivity">
             <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED"/>
-                <data android:scheme="package" />
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </receiver>
-
-        <receiver
-            android:name=".OnDeviceBoot"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </receiver>
-
-        <!-- Services -->
-        <service
-            android:name=".DialogDisplayService"
-            android:enabled="true"
-            android:exported="true" />
-
-        <!-- Activities -->
+        </activity>
         <activity android:name=".NavigationActivity">
             <intent-filter>
                 <action android:name="com.vimers.smartblock.activity_navigation" />
@@ -84,9 +63,9 @@
             android:name=".InputPasswordActivity"
             android:launchMode="singleTask">
             <intent-filter>
-                <action android:name="com.vimers.smartblock.activity_input_password"/>
+                <action android:name="com.vimers.smartblock.activity_input_password" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity android:name=".AppListActivity">
@@ -105,22 +84,54 @@
         </activity>
         <activity android:name=".MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="com.vimers.smartblock.activity_main" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <!-- Receivers -->
+        <receiver
+            android:name=".AppInstallBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".DeviceBootBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
         <!-- Admin -->
-        <receiver android:name=".AppDeviceAdminReceiver"
+        <receiver
+            android:name=".AppDeviceAdminReceiver"
             android:description="@string/device_admin_description"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
-            <meta-data android:name="android.app.device_admin"
+            <meta-data
+                android:name="android.app.device_admin"
                 android:resource="@xml/device_admin_usage" />
+
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
 
+        <!-- Services -->
+        <service
+            android:name=".BlockService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>
